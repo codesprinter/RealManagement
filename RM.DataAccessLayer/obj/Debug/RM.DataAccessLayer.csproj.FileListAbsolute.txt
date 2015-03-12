@@ -1,0 +1,12 @@
+D:\GitRepo\RealManagement\RM.DataAccessLayer\obj\Debug\RM.DataAccessLayer.csprojResolveAssemblyReference.cache
+D:\GitRepo\RealManagement\RM.DataAccessLayer\bin\Debug\RM.DataAccessLayer.dll.config
+D:\GitRepo\RealManagement\RM.DataAccessLayer\bin\Debug\RM.DataAccessLayer.dll
+D:\GitRepo\RealManagement\RM.DataAccessLayer\bin\Debug\RM.DataAccessLayer.pdb
+D:\GitRepo\RealManagement\RM.DataAccessLayer\bin\Debug\EntityFramework.dll
+D:\GitRepo\RealManagement\RM.DataAccessLayer\bin\Debug\EntityFramework.SqlServer.dll
+D:\GitRepo\RealManagement\RM.DataAccessLayer\bin\Debug\RM.DomainModel.dll
+D:\GitRepo\RealManagement\RM.DataAccessLayer\bin\Debug\RM.DomainModel.pdb
+D:\GitRepo\RealManagement\RM.DataAccessLayer\bin\Debug\EntityFramework.xml
+D:\GitRepo\RealManagement\RM.DataAccessLayer\bin\Debug\EntityFramework.SqlServer.xml
+D:\GitRepo\RealManagement\RM.DataAccessLayer\obj\Debug\RM.DataAccessLayer.dll
+D:\GitRepo\RealManagement\RM.DataAccessLayer\obj\Debug\RM.DataAccessLayer.pdb

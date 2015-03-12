@@ -1,0 +1,56 @@
+﻿@model RM.Web.ViewModel.SupplierContactViewModel
+
+@{
+    ViewBag.Title = "Contact List";
+}
+
+<h2>ContactList</h2>
+
+<p>
+    @Html.ActionLink("Add Contact Details", "AddSupplierContactDetails", new {id = Model.SupplierId})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayText("Contact Person")
+        </th>
+        <th>
+            @Html.DisplayText("Contact No")
+        </th>
+        <th>
+            @Html.DisplayText("Email")
+        </th>
+        <th>
+            @Html.DisplayText("Fax")
+        </th>
+        <th>
+            @Html.DisplayText("Mobile")
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.ContactList) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContactPerson)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContactNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fax)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Mobile)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditSupplierContact", new {  id=item.ContactID }) |
+            @Html.ActionLink("Delete", "DeleteSupplierContact", new { id = item.ContactID })
+        </td>
+    </tr>
+}
+
+</table>
