@@ -14,10 +14,10 @@ namespace RM.DataAccessLayer
     using System.Data.Entity.Infrastructure;
     using RM.DomainModel;
     
-    public partial class RMBasic : DbContext
+    public partial class BioPropEntities : DbContext
     {
-        public RMBasic()
-            : base("name=RMBasic")
+        public BioPropEntities()
+            : base("name=BioPropEntities")
         {
         }
     
@@ -26,9 +26,6 @@ namespace RM.DataAccessLayer
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Group> Groups { get; set; }
-        public virtual DbSet<Item> Items { get; set; }
-        public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<SupplierContactDetail> SupplierContactDetails { get; set; }
     }
