@@ -65,6 +65,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RMBasic.edmx</DependentUpon>
     </Compile>
+    <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

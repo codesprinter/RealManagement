@@ -14,10 +14,10 @@ namespace RM.DataAccessLayer
     using System.Data.Entity.Infrastructure;
     using RM.DomainModel;
     
-    public partial class BioPropEntities : DbContext
+    public partial class RMContext : DbContext
     {
-        public BioPropEntities()
-            : base("name=BioPropEntities")
+        public RMContext()
+            : base("name=RMContext")
         {
         }
     

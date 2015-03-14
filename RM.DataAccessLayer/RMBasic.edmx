@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="RMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="RM.DomainModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Supplier">
           <Key>
             <PropertyRef Name="SupplierID" />
@@ -13,10 +13,6 @@
           <Property Name="SupplierCode" Type="varchar" MaxLength="7" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Address" Type="varchar" MaxLength="255" />
-          <Property Name="ContactPerson1" Type="nvarchar" MaxLength="50" />
-          <Property Name="ContactPerson2" Type="nvarchar" MaxLength="50" />
-          <Property Name="ContactPerson3" Type="nvarchar" MaxLength="50" />
-          <Property Name="ContactNo" Type="nvarchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="SupplierContactDetails">
           <Key>
@@ -42,7 +38,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="RMModelStoreContainer">
+        <EntityContainer Name="RMDomainModelStoreContainer">
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SupplierContactDetails" EntityType="Self.SupplierContactDetails" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_SupplierContact_Supplier" Association="Self.FK_SupplierContact_Supplier">
@@ -54,7 +50,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="RMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="RM.DomainModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Supplier">
           <Key>
             <PropertyRef Name="SupplierID" />
@@ -63,10 +59,6 @@
           <Property Name="SupplierCode" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ContactPerson1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ContactPerson2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ContactPerson3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ContactNo" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="SupplierContactDetails" Relationship="Self.FK_SupplierContact_Supplier" FromRole="Supplier" ToRole="SupplierContactDetails" />
         </EntityType>
         <EntityType Name="SupplierContactDetail">
@@ -94,7 +86,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="BioPropEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="RMContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Suppliers" EntityType="Self.Supplier" />
           <EntitySet Name="SupplierContactDetails" EntityType="Self.SupplierContactDetail" />
           <AssociationSet Name="FK_SupplierContact_Supplier" Association="Self.FK_SupplierContact_Supplier">
@@ -107,23 +99,19 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="RMModelStoreContainer" CdmEntityContainer="BioPropEntities">
+        <EntityContainerMapping StorageEntityContainer="RMDomainModelStoreContainer" CdmEntityContainer="RMContext">
           <EntitySetMapping Name="Suppliers">
-            <EntityTypeMapping TypeName="RMModel.Supplier">
+            <EntityTypeMapping TypeName="RM.DomainModel.Supplier">
               <MappingFragment StoreEntitySet="Supplier">
                 <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
                 <ScalarProperty Name="SupplierCode" ColumnName="SupplierCode" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="ContactPerson1" ColumnName="ContactPerson1" />
-                <ScalarProperty Name="ContactPerson2" ColumnName="ContactPerson2" />
-                <ScalarProperty Name="ContactPerson3" ColumnName="ContactPerson3" />
-                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SupplierContactDetails">
-            <EntityTypeMapping TypeName="RMModel.SupplierContactDetail">
+            <EntityTypeMapping TypeName="RM.DomainModel.SupplierContactDetail">
               <MappingFragment StoreEntitySet="SupplierContactDetails">
                 <ScalarProperty Name="ContactID" ColumnName="ContactID" />
                 <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
