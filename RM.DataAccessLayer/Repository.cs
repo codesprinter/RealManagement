@@ -20,11 +20,19 @@ namespace RM.DataAccessLayer
 
     public class GenericDataRepository<T> : IGenericDataRepository<T> where T : class
     {
+        DbContext _context;
+        public GenericDataRepository(DbContext context)
+        {
+            if (context == null) { 
+                throw new ArgumentNullException("context");
+            }
+            _context = context;
+        }
         public virtual IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)
         {
             List<T> list;
-            using (var context = new Entities()) {
-                IQueryable<T> dbQuery = context.Set<T>();
+            //using (var context = new Entities()) {
+                IQueryable<T> dbQuery = _context.Set<T>();
 
                 //Apply eager loading
                 foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
@@ -33,7 +41,7 @@ namespace RM.DataAccessLayer
                 list = dbQuery
                     .AsNoTracking()
                     .ToList<T>();
-            }
+            //}
             return list;
         }
 
@@ -41,8 +49,8 @@ namespace RM.DataAccessLayer
              params Expression<Func<T, object>>[] navigationProperties)
         {
             List<T> list;
-            using (var context = new Entities()) {
-                IQueryable<T> dbQuery = context.Set<T>();
+            //using (var context = new Entities()) {
+                IQueryable<T> dbQuery = _context.Set<T>();
 
                 //Apply eager loading
                 foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
@@ -52,7 +60,7 @@ namespace RM.DataAccessLayer
                     .AsNoTracking()
                     .Where(where)
                     .ToList<T>();
-            }
+            //}
             return list;
         }
 
@@ -60,8 +68,8 @@ namespace RM.DataAccessLayer
              params Expression<Func<T, object>>[] navigationProperties)
         {
             T item = null;
-            using (var context = new Entities()) {
-                IQueryable<T> dbQuery = context.Set<T>();
+            //using (var context = new Entities()) {
+                IQueryable<T> dbQuery = _context.Set<T>();
 
                 //Apply eager loading
                 foreach (Expression<Func<T, object>> navigationProperty in navigationProperties)
@@ -70,7 +78,7 @@ namespace RM.DataAccessLayer
                 item = dbQuery
                     .AsNoTracking() //Don't track any changes for the selected item
                     .FirstOrDefault(where); //Apply where clause
-            }
+            //}
             return item;
         }
 
@@ -82,17 +90,17 @@ namespace RM.DataAccessLayer
 
         public virtual void Update(params T[] items)
         {
-            using (var context = new Entities()) {
-                DbSet<T> dbSet = context.Set<T>();
+            //using (var context = new Entities()) {
+                DbSet<T> dbSet = _context.Set<T>();
                 foreach (T item in items) {
                     dbSet.Add(item);
-                    foreach (DbEntityEntry<IEntity> entry in context.ChangeTracker.Entries<IEntity>()) {
+                    foreach (DbEntityEntry<IEntity> entry in _context.ChangeTracker.Entries<IEntity>()) {
                         IEntity entity = entry.Entity;
                         entry.State = GetEntityState(entity.EntityState);
                     }
                 }
-                context.SaveChanges();
-            }
+                //context.SaveChanges();
+            //}
         }
  
         public virtual void Remove(params T[] items)
@@ -116,19 +124,19 @@ namespace RM.DataAccessLayer
         }
     }
 
-    public interface ISupplierRepository : IGenericDataRepository<Supplier>
-    {
-    }
+    //public interface ISupplierRepository : IGenericDataRepository<Supplier>
+    //{
+    //}
 
-    public interface ISupplierContactDetailsRepository : IGenericDataRepository<SupplierContactDetail>
-    {
-    }
+    //public interface ISupplierContactDetailsRepository : IGenericDataRepository<SupplierContactDetail>
+    //{
+    //}
 
-    public class SupplierRepository : GenericDataRepository<Supplier>, ISupplierRepository
-    {
-    }
+    //public class SupplierRepository : GenericDataRepository<Supplier>, ISupplierRepository
+    //{
+    //}
 
-    public class SupplierContactDetailsRepository : GenericDataRepository<SupplierContactDetail>, ISupplierContactDetailsRepository
-    {
-    }
+    //public class SupplierContactDetailsRepository : GenericDataRepository<SupplierContactDetail>, ISupplierContactDetailsRepository
+    //{
+    //}
 }

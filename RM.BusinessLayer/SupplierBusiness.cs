@@ -1,10 +1,15 @@
 ﻿using System.Collections.Generic;
 using RM.DomainModel;
 using RM.DataAccessLayer;
+using System.Data.Entity;
 
 namespace RM.BusinessLayer
 {
-    public interface IBusinessLayer
+    public interface IDiposeContext
+    {
+        void DisposeContext();
+    }
+    public interface ISupplierBusinessLayer: IDiposeContext
     {
         IList<Supplier> GetAllSuppliers();
         Supplier GetSupplierByName(string supplierName);
@@ -20,23 +25,36 @@ namespace RM.BusinessLayer
         void RemoveSupplierContactDetails(SupplierContactDetail[] supplierContacts);
     }
 
-    public class SupplierBuinessLayer : IBusinessLayer
+    public class SupplierBuinessLayer : ISupplierBusinessLayer
     {
-        private readonly ISupplierRepository _supplierRepository;
-        private readonly ISupplierContactDetailsRepository _supplierContactDetailsRepository;
+        private IUnitOfWork _unitOfWork;
+        private readonly IGenericDataRepository<Supplier> _supplierRepository;
+        private readonly IGenericDataRepository<SupplierContactDetail> _supplierContactDetailsRepository;
+        private string _contextName = string.Empty;
 
         public SupplierBuinessLayer()
         {
-            _supplierRepository = new SupplierRepository();
-            _supplierContactDetailsRepository = new SupplierContactDetailsRepository();
+            DbContext context = new RMContext();
+            _unitOfWork = new UnitOfWork(context);
+            _supplierRepository = _unitOfWork.RepositoryFor<Supplier>();
+            _supplierContactDetailsRepository = _unitOfWork.RepositoryFor<SupplierContactDetail>();
         }
 
-        public SupplierBuinessLayer(ISupplierRepository supplierRepository,
-            ISupplierContactDetailsRepository supplierContactDetailsRepository)
+        public SupplierBuinessLayer(string contextName)
         {
-            _supplierRepository = supplierRepository;
-            _supplierContactDetailsRepository = supplierContactDetailsRepository;
+            _contextName = contextName;
+            DbContext context = new RMContext(_contextName);
+            _unitOfWork = new UnitOfWork(context);
+            _supplierRepository = _unitOfWork.RepositoryFor<Supplier>();
+            _supplierContactDetailsRepository = _unitOfWork.RepositoryFor<SupplierContactDetail>();
         }
+
+        //public SupplierBuinessLayer(ISupplierRepository supplierRepository,
+        //    ISupplierContactDetailsRepository supplierContactDetailsRepository)
+        //{
+        //    _supplierRepository = supplierRepository;
+        //    _supplierContactDetailsRepository = supplierContactDetailsRepository;
+        //}
 
         public IList<Supplier> GetAllSuppliers()
         {
@@ -59,6 +77,7 @@ namespace RM.BusinessLayer
         {
             /* Validation and error handling omitted */
             _supplierRepository.Add(supplier);
+            _unitOfWork.SaveChanges();
         }
 
         public void UpdateSupplier(params Supplier[] supplier)
@@ -66,7 +85,6 @@ namespace RM.BusinessLayer
             /* Validation and error handling omitted */
             _supplierRepository.Update(supplier);
         }
-
         public void RemoveSupplier(params Supplier[] supplier)
         {
             /* Validation and error handling omitted */
@@ -97,6 +115,10 @@ namespace RM.BusinessLayer
         {
             /* Validation and error handling omitted */
             _supplierContactDetailsRepository.Remove(supplierContacts);
+        }
+        public void DisposeContext()
+        {
+            _unitOfWork.Dispose();
         }
     }
 }

@@ -19,6 +19,14 @@ namespace RM.DataAccessLayer
         public RMContext()
             : base("name=RMContext")
         {
+            Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
+        }
+        public RMContext(string contextName)
+            : base(string.Format("name={0}", contextName))
+        {
+            Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

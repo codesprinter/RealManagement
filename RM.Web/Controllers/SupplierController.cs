@@ -11,12 +11,18 @@ namespace RM.Web.Controllers
 {
     public class SupplierController : Controller
     {
+        private ISupplierBusinessLayer _supplierBussiness = null;
         //
         // GET: /Supplier/
+        
+        public SupplierController(ISupplierBusinessLayer supplierBussiness)
+        {
+            _supplierBussiness = supplierBussiness;
+        }
         public ActionResult Index()
         {
-            IBusinessLayer businessLayer = new SupplierBuinessLayer();
-            var suppliers = businessLayer.GetAllSuppliers();
+            //ISupplierBusinessLayer businessLayer = new SupplierBuinessLayer();
+            var suppliers = _supplierBussiness.GetAllSuppliers();
             return View(suppliers);
         }
         public ActionResult AddSupplier()
@@ -26,28 +32,28 @@ namespace RM.Web.Controllers
         [HttpPost]
         public ActionResult AddSupplier(Supplier supplier)
         {
-            IBusinessLayer businessLayer = new SupplierBuinessLayer();
+            //ISupplierBusinessLayer businessLayer = new SupplierBuinessLayer();
             supplier.EntityState = EntityState.Added;
-            businessLayer.AddSupplier(supplier);
+            _supplierBussiness.AddSupplier(supplier);
             return RedirectToAction("Index");
         }
         public ActionResult EditSupplier(long id)
         {
-            IBusinessLayer businessLayer = new SupplierBuinessLayer();
-            var supplier = businessLayer.GetSupplierByID(id);
+            //ISupplierBusinessLayer businessLayer = new SupplierBuinessLayer();
+            var supplier = _supplierBussiness.GetSupplierByID(id);
             return View(supplier);
         }
         [HttpPost]
         public ActionResult EditSupplier(Supplier supplier)
         {
-            IBusinessLayer businessLayer = new SupplierBuinessLayer();
+            ISupplierBusinessLayer businessLayer = new SupplierBuinessLayer();
             supplier.EntityState = EntityState.Modified;
             businessLayer.UpdateSupplier(supplier);
             return RedirectToAction("Index");
         }
         public ActionResult DeleteSupplier(int id)
         {
-            IBusinessLayer businessLayer = new SupplierBuinessLayer();
+            ISupplierBusinessLayer businessLayer = new SupplierBuinessLayer();
             Supplier[] supplierList = new Supplier[1];
             supplierList[0] = businessLayer.GetSupplierByID(id);
 
@@ -67,14 +73,14 @@ namespace RM.Web.Controllers
         }
         public ActionResult Details(long id)
         {
-            IBusinessLayer businessLayer = new SupplierBuinessLayer();
+            ISupplierBusinessLayer businessLayer = new SupplierBuinessLayer();
             var supplier = businessLayer.GetSupplierByID(id);
             SupplierContactViewModel supplierViewModel = new SupplierContactViewModel(supplier);
             return View(supplierViewModel);
         }
         public ActionResult ContactList(int id)
         {
-            IBusinessLayer businessLayer = new SupplierBuinessLayer();
+            ISupplierBusinessLayer businessLayer = new SupplierBuinessLayer();
             SupplierContactViewModel supplierContact = new SupplierContactViewModel();
             var contactList = businessLayer.GetSupplierContactsBySupplierID(id);
             supplierContact.SupplierId = id;
@@ -88,7 +94,7 @@ namespace RM.Web.Controllers
         [HttpPost]
         public ActionResult AddSupplierContactDetails(SupplierContactDetail contactDetail, int id)
         {
-            IBusinessLayer businessLayer = new SupplierBuinessLayer();
+            ISupplierBusinessLayer businessLayer = new SupplierBuinessLayer();
             contactDetail.EntityState = EntityState.Added;
             contactDetail.SupplierID = id;
             SupplierContactDetail[] contactList = new SupplierContactDetail[1];
@@ -98,14 +104,14 @@ namespace RM.Web.Controllers
         }
         public ActionResult EditSupplierContact(int id)
         {
-            IBusinessLayer businessLayer = new SupplierBuinessLayer();
+            ISupplierBusinessLayer businessLayer = new SupplierBuinessLayer();
             var supplierContact = businessLayer.GetSupplierContactByID(id);
             return View(supplierContact);
         }
         [HttpPost]
         public ActionResult EditSupplierContact(SupplierContactDetail contactDetail, int id)
         {
-            IBusinessLayer businessLayer = new SupplierBuinessLayer();
+            ISupplierBusinessLayer businessLayer = new SupplierBuinessLayer();
             contactDetail.EntityState = EntityState.Modified;
             SupplierContactDetail[] contactList = new SupplierContactDetail[1];
             contactList[0] = contactDetail;
@@ -114,7 +120,7 @@ namespace RM.Web.Controllers
         }
         public ActionResult DeleteSupplierContact(int id)
         {
-            IBusinessLayer businessLayer = new SupplierBuinessLayer();
+            ISupplierBusinessLayer businessLayer = new SupplierBuinessLayer();
             var supplierContact = businessLayer.GetSupplierContactByID(id);
             supplierContact.EntityState = EntityState.Deleted;
             long supplierId = supplierContact.SupplierID;
